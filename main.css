@@ -123,6 +123,7 @@ body {
 .color-options {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .color-option {
@@ -155,6 +156,7 @@ body {
   overflow: hidden;
   box-shadow: var(--box-shadow);
   border: 2px solid var(--border-color);
+  cursor: pointer;
 }
 
 .score-board {
@@ -190,13 +192,14 @@ body {
 .charecter {
   position: absolute;
   bottom: 20px;
-  left: 70px;
+  left: 35px;
   width: 95px;
   z-index: 10;
+  transition: left 0.1s ease;
 }
 
 .charecter.jumpAnimate {
-  animation: jumpAnim 0.55s ease-out;
+  animation: jumpAnim 0.5s ease-out;
 }
 
 .dino-svg {
@@ -218,7 +221,7 @@ body {
 }
 
 .block.move {
-  animation: blockAnim 2s linear infinite;
+  animation: blockAnim 2.2s linear infinite;
 }
 
 .cactus-svg {
@@ -239,7 +242,7 @@ body {
     bottom: 20px;
   }
   50% {
-    bottom: 200px;
+    bottom: 190px;
   }
   100% {
     bottom: 20px;
@@ -292,6 +295,12 @@ body {
 .final-score {
   font-size: 1.6rem;
   color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.best-score {
+  font-size: 1.2rem;
+  color: #fbbf24;
   margin-bottom: 1.5rem;
 }
 
@@ -329,66 +338,240 @@ kbd {
   border: 1px solid var(--border-color);
 }
 
-@media (max-width: 768px) {
-  .game-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .game-box {
-    height: 350px;
-  }
-
-  .charecter {
-    width: 65px;
-    left: 50px;
-  }
-
-  .block {
-    width: 50px;
-  }
-
-  .score-board {
-    font-size: 1.2rem;
-    top: 10px;
-    right: 15px;
-  }
-
-  .restart-card {
-    padding: 1.5rem;
-  }
-
-  .restart-card h1 {
-    font-size: 1.8rem;
-  }
-
-  .color-option {
-    width: 28px;
-    height: 28px;
-  }
-
-  .stop-btn {
-    font-size: 0.8rem;
-    padding: 0 0.8rem;
-  }
-
-  @keyframes jumpAnim {
-    0% {
-      bottom: 20px;
-    }
-    50% {
-      bottom: 140px;
-    }
-    100% {
-      bottom: 20px;
-    }
-  }
-}
-
 .paused .block {
   animation-play-state: paused !important;
 }
 
 .paused .charecter.jumpAnimate {
   animation-play-state: paused !important;
+}
+
+@media (max-width: 768px) {
+  .game-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .game-box {
+    height: 400px;
+  }
+  
+ .charecter {
+    width: 85px;
+    left: 30px;
+  }
+  
+  .block {
+    width: 55px;
+  }
+  
+  .score-board {
+    font-size: 1.6rem;
+    padding: 8px 18px;
+    top: 15px;
+    right: 20px;
+  }
+  
+  .score-board .high-score {
+    font-size: 0.9rem;
+  }
+  
+  .color-option {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .color-label {
+    font-size: 0.9rem;
+  }
+  
+  .theme-btn, .stop-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+  
+  .stop-btn {
+    width: auto;
+    padding: 0 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .restart-card {
+    padding: 2rem 2.5rem;
+  }
+  
+  .restart-card h1 {
+    font-size: 2.2rem;
+  }
+  
+  .instruction {
+    font-size: 0.9rem;
+  }
+  
+  @keyframes jumpAnim {
+    0% { bottom: 20px; }
+    50% { bottom: 170px; }
+    100% { bottom: 20px; }
+  }
+}
+
+@media (max-width: 480px) {
+  .game-wrapper {
+    padding: 0.5rem;
+  }
+  
+  .game-header {
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .game-header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .game-box {
+    height: 350px;
+    width: 95%;
+    border-radius: 20px;
+  }
+  
+  .charecter {
+    width: 70px;
+    left: 25px;
+  }
+  
+  .block {
+    width: 48px;
+  }
+  
+  .score-board {
+    font-size: 1.2rem;
+    padding: 5px 12px;
+    top: 10px;
+    right: 12px;
+  }
+  
+  .score-board .high-score {
+    font-size: 0.7rem;
+    margin-top: 2px;
+  }
+  
+  .color-picker-container {
+    gap: 0.4rem;
+  }
+  
+  .color-label {
+    font-size: 0.75rem;
+  }
+  
+  .color-option {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .controls-panel {
+    gap: 0.6rem;
+  }
+  
+  .theme-btn, .stop-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+  
+  .stop-btn {
+    width: auto;
+    padding: 0 0.8rem;
+    font-size: 0.75rem;
+  }
+  
+  .restart-card {
+    padding: 1.2rem 1.5rem;
+    width: 85%;
+  }
+  
+  .restart-card h1 {
+    font-size: 1.6rem;
+  }
+  
+  .final-score {
+    font-size: 1.2rem;
+  }
+  
+  .best-score {
+    font-size: 1rem;
+  }
+  
+  .restart-btn {
+    padding: 8px 20px;
+    font-size: 1rem;
+  }
+  
+  .instruction {
+    font-size: 0.7rem;
+    margin-top: 1.2rem;
+  }
+  
+  kbd {
+    padding: 3px 8px;
+    font-size: 0.7rem;
+  }
+  
+  @keyframes jumpAnim {
+    0% { bottom: 20px; }
+    50% { bottom: 140px; }
+    100% { bottom: 20px; }
+  }
+  
+  @keyframes blockAnim {
+    0% { left: 100%; }
+    100% { left: -70px; }
+  }
+}
+
+@media (max-width: 380px) {
+  .game-header h1 {
+    font-size: 1.1rem;
+  }
+  
+  .game-box {
+    height: 300px;
+  }
+  
+  .charecter {
+    width: 60px;
+    left: 20px;
+  }
+  
+  .block {
+    width: 42px;
+  }
+  
+  .score-board {
+    font-size: 1rem;
+    padding: 4px 10px;
+  }
+  
+  .color-option {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .theme-btn, .stop-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+  
+  .stop-btn {
+    width: auto;
+    padding: 0 0.6rem;
+    font-size: 0.7rem;
+  }
+  
+  @keyframes jumpAnim {
+    0% { bottom: 20px; }
+    50% { bottom: 120px; }
+    100% { bottom: 20px; }
+  }
 }

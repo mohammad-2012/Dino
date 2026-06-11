@@ -65,6 +65,7 @@ const colorOptions = document.querySelectorAll(".color-option");
 const dinoBody = document.querySelector(".dino-body");
 const dinoLegs = document.querySelectorAll(".dino-leg");
 const dinoArm = document.querySelector(".dino-arm");
+const gameBox = document.querySelector(".game-box");
 
 let score = 0;
 let gameRunning = true;
@@ -73,14 +74,11 @@ let gameLoop = null;
 let scoreLoop = null;
 let isJumping = false;
 let highScore = 0;
+let originalLeft = 35;
 
 function loadHighScore() {
   const saved = localStorage.getItem("dinoDashHighScore");
-  if (saved !== null) {
-    highScore = parseInt(saved);
-  } else {
-    highScore = 0;
-  }
+  highScore = saved ? parseInt(saved) : 0;
   highScoreElement.textContent = highScore;
   if (bestScoreDisplay) bestScoreDisplay.textContent = highScore;
 }
@@ -92,6 +90,26 @@ function saveHighScore() {
     highScoreElement.textContent = highScore;
     if (bestScoreDisplay) bestScoreDisplay.textContent = highScore;
   }
+}
+
+function jump() {
+  if (!gameRunning || isPaused || isJumping) return;
+
+  isJumping = true;
+  trexElement.classList.add("jumpAnimate");
+
+  const isMobile = window.innerWidth <= 768;
+  const jumpForward = isMobile ? 45 : 60;
+
+  trexElement.style.left = originalLeft + jumpForward + "px";
+
+  setTimeout(() => {
+    trexElement.classList.remove("jumpAnimate");
+    trexElement.style.left = originalLeft + "px";
+    setTimeout(() => {
+      isJumping = false;
+    }, 100);
+  }, 500);
 }
 
 function startGame() {
@@ -106,6 +124,7 @@ function startGame() {
 
   trexElement.classList.remove("jumpAnimate");
   trexElement.style.bottom = "20px";
+  trexElement.style.left = originalLeft + "px";
 
   treeElement.classList.remove("move");
   treeElement.style.left = "100%";
@@ -116,14 +135,14 @@ function startGame() {
   stopBtn.style.color = "";
 
   setTimeout(() => {
-    if (!isPaused && gameRunning) {
+    if (gameRunning && !isPaused) {
       treeElement.classList.add("move");
     }
-  }, 10);
+  }, 100);
 
   restartPage.classList.remove("show-restart-page");
 
-  gameLoop = setInterval(checkCollision, 20);
+  gameLoop = setInterval(checkCollision, 16);
   scoreLoop = setInterval(() => {
     if (gameRunning && !isPaused) {
       score++;
@@ -134,7 +153,6 @@ function startGame() {
 
 function pauseGame() {
   if (!gameRunning) return;
-
   isPaused = true;
   document.body.classList.add("paused");
   treeElement.style.animationPlayState = "paused";
@@ -145,7 +163,6 @@ function pauseGame() {
 
 function resumeGame() {
   if (!gameRunning) return;
-
   isPaused = false;
   document.body.classList.remove("paused");
   treeElement.style.animationPlayState = "running";
@@ -156,21 +173,34 @@ function resumeGame() {
 
 function togglePause() {
   if (!gameRunning) return;
-
-  if (isPaused) {
-    resumeGame();
-  } else {
-    pauseGame();
-  }
+  isPaused ? resumeGame() : pauseGame();
 }
 
 function checkCollision() {
-  if (!gameRunning || isPaused) return;
+  if (!gameRunning || isPaused || isJumping) return;
 
-  const trexBottom = parseInt(window.getComputedStyle(trexElement).bottom);
-  const treeLeft = parseInt(window.getComputedStyle(treeElement).left);
+  const trexRect = trexElement.getBoundingClientRect();
+  const treeRect = treeElement.getBoundingClientRect();
+  const gameRect = document.querySelector(".game-box").getBoundingClientRect();
 
-  if (treeLeft > 95 && treeLeft < 200 && trexBottom < 65) {
+  const trexAdjusted = {
+    left: trexRect.left - gameRect.left,
+    right: trexRect.right - gameRect.left,
+    bottom: trexRect.bottom - gameRect.top,
+  };
+
+  const treeAdjusted = {
+    left: treeRect.left - gameRect.left,
+    right: treeRect.right - gameRect.left,
+    bottom: treeRect.bottom - gameRect.top,
+  };
+
+  const collisionX =
+    trexAdjusted.right > treeAdjusted.left + 5 &&
+    trexAdjusted.left + 5 < treeAdjusted.right;
+  const collisionY = trexAdjusted.bottom > treeAdjusted.bottom - 25;
+
+  if (collisionX && collisionY) {
     gameOver();
   }
 }
@@ -179,14 +209,10 @@ function gameOver() {
   if (!gameRunning) return;
 
   saveHighScore();
-
   gameRunning = false;
-  isPaused = false;
   finalScoreElement.textContent = score;
   if (bestScoreDisplay) bestScoreDisplay.textContent = highScore;
   restartPage.classList.add("show-restart-page");
-  stopBtn.innerHTML = "⏸️ Stop";
-  document.body.classList.remove("paused");
 
   if (gameLoop) clearInterval(gameLoop);
   if (scoreLoop) clearInterval(scoreLoop);
@@ -195,18 +221,27 @@ function gameOver() {
 document.addEventListener("keydown", (e) => {
   if (
     (e.key === " " || e.key === "ArrowUp") &&
-    gameRunning &&
     !isPaused &&
-    !isJumping
+    !isJumping &&
+    gameRunning
   ) {
     e.preventDefault();
-    isJumping = true;
-    trexElement.classList.add("jumpAnimate");
+    jump();
+  }
+});
 
-    setTimeout(() => {
-      trexElement.classList.remove("jumpAnimate");
-      isJumping = false;
-    }, 550);
+gameBox.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (!isPaused && !isJumping && gameRunning) {
+    jump();
+  }
+});
+
+gameBox.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!isPaused && !isJumping && gameRunning) {
+    jump();
   }
 });
 
@@ -229,7 +264,8 @@ themeToggle.addEventListener("click", () => {
 });
 
 colorOptions.forEach((option) => {
-  option.addEventListener("click", () => {
+  option.addEventListener("click", (e) => {
+    e.stopPropagation();
     const color = option.getAttribute("data-color");
     dinoBody.style.fill = color;
     dinoLegs.forEach((leg) => (leg.style.fill = color));
