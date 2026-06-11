@@ -2,8 +2,7 @@
 
 > A classic T-Rex runner game built with HTML, CSS, and JavaScript
 
-## 🌐 Live Demo
-[https://mohammad-2012.github.io/Dino/](https://mohammad-2012.github.io/Dino/)
+## 🌐 Live Demo : [https://mohammad-2012.github.io/Dino/](https://mohammad-2012.github.io/Dino/)
 
 ## 🎮 About
 Dino Dash is an endless runner game where you control a dinosaur avoiding incoming cacti. Jump over obstacles, beat your high score, and enjoy the retro arcade experience right in your browser!
