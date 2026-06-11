@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dino Dash | T-Rex Game</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='25' y='40' width='50' height='50' rx='10' fill='%234ade80'/%3E%3Ccircle cx='65' cy='55' r='6' fill='white'/%3E%3Ccircle cx='68' cy='55' r='3' fill='black'/%3E%3Cpolygon points='35,40 40,25 45,40' fill='%2322c55e'/%3E%3Cpolygon points='50,40 55,20 60,40' fill='%2322c55e'/%3E%3Crect x='35' y='85' width='12' height='15' rx='4' fill='%234ade80'/%3E%3Crect x='55' y='85' width='12' height='15' rx='4' fill='%234ade80'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="game-wrapper">
+      <div class="game-header">
+        <h1>🦖 DINO DASH</h1>
+        <div class="controls-panel">
+          <button class="theme-btn" id="themeToggle">🌙</button>
+          <button class="stop-btn" id="stopBtn">⏸️ Stop</button>
+          <div class="color-picker-container">
+            <label class="color-label">🎨 Dino Color</label>
+            <div class="color-options">
+              <div
+                class="color-option"
+                data-color="#4ade80"
+                style="background: #4ade80"
+              ></div>
+              <div
+                class="color-option"
+                data-color="#f97316"
+                style="background: #f97316"
+              ></div>
+              <div
+                class="color-option"
+                data-color="#a855f7"
+                style="background: #a855f7"
+              ></div>
+              <div
+                class="color-option"
+                data-color="#ef4444"
+                style="background: #ef4444"
+              ></div>
+              <div
+                class="color-option"
+                data-color="#3b82f6"
+                style="background: #3b82f6"
+              ></div>
+              <div
+                class="color-option"
+                data-color="#ec4899"
+                style="background: #ec4899"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-container">
+        <div class="game-box">
+          <div class="score-board">
+            <div>Score: <span id="score">0</span></div>
+            <div class="high-score">🏆 Best: <span id="highScore">0</span></div>
+          </div>
+          <div class="charecter">
+            <svg viewBox="0 0 100 100" class="dino-svg">
+              <rect
+                class="dino-body"
+                x="25"
+                y="40"
+                width="50"
+                height="50"
+                rx="10"
+                fill="#4ade80"
+              />
+              <circle class="dino-eye" cx="65" cy="55" r="6" fill="white" />
+              <circle class="dino-pupil" cx="68" cy="55" r="3" fill="#1a1a2e" />
+              <polygon
+                class="dino-spike"
+                points="35,40 40,25 45,40"
+                fill="#22c55e"
+              />
+              <polygon
+                class="dino-spike"
+                points="50,40 55,20 60,40"
+                fill="#22c55e"
+              />
+              <rect
+                class="dino-leg"
+                x="35"
+                y="85"
+                width="12"
+                height="15"
+                rx="4"
+                fill="#4ade80"
+              />
+              <rect
+                class="dino-leg"
+                x="55"
+                y="85"
+                width="12"
+                height="15"
+                rx="4"
+                fill="#4ade80"
+              />
+              <rect
+                class="dino-arm"
+                x="30"
+                y="65"
+                width="10"
+                height="14"
+                rx="4"
+                fill="#4ade80"
+              />
+            </svg>
+          </div>
+          <div class="block">
+            <svg viewBox="0 0 80 80" class="cactus-svg">
+              <rect
+                x="30"
+                y="15"
+                width="16"
+                height="60"
+                rx="5"
+                fill="#2d5016"
+              />
+              <rect
+                x="16"
+                y="30"
+                width="12"
+                height="45"
+                rx="4"
+                fill="#3a6b1e"
+              />
+              <rect
+                x="48"
+                y="22"
+                width="12"
+                height="50"
+                rx="4"
+                fill="#2d5016"
+              />
+              <circle cx="38" cy="18" r="8" fill="#4ade80" />
+              <rect x="32" y="8" width="16" height="10" rx="3" fill="#3a6b1e" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="restart-page">
+        <div class="restart-card">
+          <h1>💀 GAME OVER 💀</h1>
+          <p class="final-score">Your Score: <span id="finalScore">0</span></p>
+          <p class="best-score">
+            🏆 Best Score: <span id="bestScoreDisplay">0</span>
+          </p>
+          <button class="restart-btn">🔄 Play Again</button>
+        </div>
+      </div>
+
+      <div class="instruction">
+        Press <kbd>Space</kbd> or <kbd>↑</kbd> to Jump | <kbd>⏸️ Stop</kbd> to
+        Pause
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
